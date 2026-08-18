@@ -33,8 +33,6 @@ flowchart LR
 - C-index, STAGE-5, bootstrap intervals, slide-count bias groups, ablations, sensitivity sweeps and case-study visualization.
 - Restartable, stage-wise experiment orchestration through one command-line program.
 
-The repository deliberately keeps the implementation in a small number of substantial files. This makes the complete mathematical path easy to trace without hiding logic behind a large framework hierarchy.
-
 ```text
 configs/
   default.yaml              official training configuration
