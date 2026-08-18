@@ -1,0 +1,8 @@
+{
+  "nuc": {
+    "1": {"centroid": [120.5, 88.0], "type": 1, "type_prob": 0.97},
+    "2": {"centroid": [141.0, 101.5], "type": 2, "type_prob": 0.83}
+  },
+  "note": "Coordinates must be expressed in the same level-0 frame used by the WSI manifest."
+}
+

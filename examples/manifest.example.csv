@@ -1,0 +1,5 @@
+dataset,patient_id,slide_id,wsi_path,feature_path,time,event
+TCGA-LUAD,TCGA-EXAMPLE-01,TCGA-EXAMPLE-01-01A,/secure/wsis/example_01.svs,data/features/example_01.pt,721,1
+TCGA-LUAD,TCGA-EXAMPLE-01,TCGA-EXAMPLE-01-02A,/secure/wsis/example_02.svs,data/features/example_02.pt,721,1
+TCGA-LUAD,TCGA-EXAMPLE-02,TCGA-EXAMPLE-02-01A,/secure/wsis/example_03.svs,data/features/example_03.pt,1034,0
+

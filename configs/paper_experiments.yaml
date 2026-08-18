@@ -1,0 +1,65 @@
+# Dataset paths and experiment matrices used by `wsi-diffusion matrix`.
+schema_version: 1
+
+datasets:
+  NLST:
+    dataset: NLST
+    manifest: data/manifests/nlst.csv
+    split_file: data/splits/nlst_5fold.json
+  TCGA-LUSC:
+    dataset: TCGA-LUSC
+    manifest: data/manifests/tcga_lusc.csv
+    split_file: data/splits/tcga_lusc_5fold.json
+  TCGA-LUAD:
+    dataset: TCGA-LUAD
+    manifest: data/manifests/tcga_luad.csv
+    split_file: data/splits/tcga_luad_5fold.json
+  TCGA-BRCA:
+    dataset: TCGA-BRCA
+    manifest: data/manifests/tcga_brca.csv
+    split_file: data/splits/tcga_brca_5fold.json
+  TCGA-BLCA:
+    dataset: TCGA-BLCA
+    manifest: data/manifests/tcga_blca.csv
+    split_file: data/splits/tcga_blca_5fold.json
+
+matrices:
+  table4_ablation:
+    datasets: [NLST, TCGA-LUSC]
+    variants:
+      complete: []
+      no_consistency:
+        - diffusion.wsi_level.use_consistency=false
+        - diffusion.wsi_level.consistency_loss_weight=0.0
+        - diffusion.patch_level.use_consistency=false
+      no_distribution:
+        - diffusion.wsi_level.use_distribution=false
+        - diffusion.wsi_level.distribution_loss_weight=0.0
+        - diffusion.patch_level.use_distribution=false
+        - generation.class_sampling=uniform
+      no_wsi_level:
+        - generation.skip_wsi_level=true
+        - generation.class_sampling=uniform
+        - diffusion.patch_level.use_consistency=false
+        - diffusion.patch_level.use_distribution=false
+      no_generation:
+        - generation.enabled=false
+  table5_patch_timesteps:
+    datasets: [NLST, TCGA-LUSC, TCGA-LUAD]
+    variants:
+      t10: [diffusion.patch_level.timesteps=10]
+      t20: [diffusion.patch_level.timesteps=20]
+      t30: [diffusion.patch_level.timesteps=30]
+      t40: [diffusion.patch_level.timesteps=40]
+      t50: [diffusion.patch_level.timesteps=50]
+  table6_generation_strategy:
+    datasets: [NLST, TCGA-LUSC, TCGA-LUAD]
+    variants:
+      wholly: [generation.strategy=wholly]
+      partially: [generation.strategy=partially]
+      unequally: [generation.strategy=unequally]
+  figure4_generation_grid:
+    datasets: [TCGA-LUSC]
+    grid:
+      generation.generated_slides_per_patient: [0, 1, 3, 4]
+      generation.patches_per_generated_slide: [100, 300, 500, 700, 900, 1000, 1100, 1200]

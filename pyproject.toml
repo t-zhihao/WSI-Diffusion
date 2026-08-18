@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wsi-diffusion"
+version = "1.0.0"
+description = "Official implementation of hierarchical WSI diffusion for survival prediction"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+  {name = "Zhihao Tang"},
+  {name = "Xi Zhang"},
+  {name = "Chaozhuo Li"},
+]
+keywords = ["computational-pathology", "whole-slide-image", "diffusion", "survival-analysis", "pytorch"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+  "numpy>=1.23,<3",
+  "pandas>=1.5,<3",
+  "PyYAML>=6.0",
+  "scikit-learn>=1.2,<2",
+  "torch>=1.9.1",
+  "Pillow>=9.5",
+]
+
+[project.optional-dependencies]
+wsi = ["openslide-python>=1.2", "timm>=0.9"]
+plots = ["matplotlib>=3.7"]
+dev = ["pytest>=7.4", "pytest-cov>=4.1", "ruff>=0.4"]
+all = ["openslide-python>=1.2", "timm>=0.9", "matplotlib>=3.7"]
+
+[project.urls]
+Homepage = "https://github.com/t-zhihao/WSI-Diffusion"
+Paper = "https://doi.org/10.1609/aaai.v39i7.32788"
+
+[project.scripts]
+wsi-diffusion = "wsi_diffusion.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py38"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-markers"
+testpaths = ["tests"]
+pythonpath = ["src"]

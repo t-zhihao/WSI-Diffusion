@@ -1,0 +1,159 @@
+# Official WSI-Diffusion configuration. Paths are relative to the repository root.
+experiment:
+  name: wsi_diffusion
+  seed: 2025
+  deterministic: true
+  device: auto
+  precision: amp
+  output_dir: outputs/wsi_diffusion
+  resume: true
+
+data:
+  dataset: TCGA-LUAD
+  manifest: data/manifests/tcga_luad.csv
+  split_file: data/splits/tcga_luad_5fold.json
+  wsi_dim: 384
+  patch_dim: 384
+  num_tissue_classes: 6
+  tissue_classes:
+    - neoplastic
+    - dead
+    - inflammatory
+    - non_neoplastic_epithelial
+    - connective
+    - no_label
+  event_column_semantics: observed
+  min_slides_for_diffusion: 2
+  max_patches_per_real_slide: null
+  feature_cache_size: 8
+
+preprocessing:
+  patch_size: 256
+  stride: 256
+  level: 0
+  thumbnail_max_side: 2048
+  otsu_saturation_threshold: 0.05
+  minimum_tissue_fraction: 0.50
+  encoder:
+    batch_size: 256
+  hovernet:
+    prediction_root: data/hovernet
+    pannuke_label_order:
+      neoplastic: 1
+      inflammatory: 2
+      connective: 3
+      dead: 4
+      non_neoplastic_epithelial: 5
+
+split:
+  n_folds: 5
+  validation_fraction: 0.10
+  stratify_time_bins: 5
+
+normalization:
+  enabled: true
+  method: standard
+  epsilon: 1.0e-6
+  fit_on: train_only
+
+diffusion:
+  prediction_type: epsilon
+  sampling_variance: paper_beta
+  clip_x0: null
+  schedule:
+    name: cosine
+    beta_start: 1.0e-4
+    beta_end: 2.0e-2
+  time_embedding_dim: 128
+  hidden_dim: 512
+  condition_dim: 256
+  num_residual_blocks: 4
+  dropout: 0.10
+  wsi_level:
+    timesteps: 30
+    use_consistency: true
+    use_distribution: true
+    distribution_parameterization: direct
+    distribution_schedule: null
+    consistency_loss_weight: 1.0
+    distribution_loss_weight: 1.0
+    condition_pooling: mean
+  patch_level:
+    timesteps: 30
+    schedule: null
+    condition_fusion: hadamard
+    use_consistency: true
+    use_distribution: true
+
+training:
+  optimizer: adamw
+  gradient_clip_norm: 1.0
+  ema_decay: 0.999
+  num_workers: 8
+  pin_memory: true
+  checkpoint_every: 10
+  wsi_diffuser:
+    epochs: 400
+    batch_size: 64
+    learning_rate: 2.0e-4
+    weight_decay: 1.0e-5
+    warmup_epochs: 5
+    patience: 30
+  patch_diffuser:
+    epochs: 400
+    batch_size: 128
+    learning_rate: 2.0e-4
+    weight_decay: 1.0e-5
+    warmup_epochs: 5
+    patience: 30
+    samples_per_epoch: 100000
+    slide_local_block_size: 128
+  survival:
+    epochs: 200
+    batch_size: 16
+    learning_rate: 1.0e-4
+    weight_decay: 1.0e-4
+    warmup_epochs: 0
+    patience: 25
+    cox_risk_set: full_dataset
+    cox_ties: breslow
+    cox_reduction: mean
+
+generation:
+  enabled: true
+  strategy: wholly
+  skip_wsi_level: false
+  class_sampling: generated
+  generated_slides_per_patient: 3
+  target_total_slides: cohort_max
+  partially_threshold: 3
+  patches_per_generated_slide: 1000
+  distribution_temperature: 1.0
+  min_patches_per_nonzero_class: 0
+  seed_offset: 100000
+
+survival_model:
+  cmil_hidden_dim: 128
+  cmil_output_dim: 64
+  cmil_dropout: 0.25
+  wsi_pooling: mean
+  patient_pooling: mean
+  patient_hidden_dims: [64, 32]
+  dropout: 0.25
+
+evaluation:
+  primary_metric: c_index
+  stage5:
+    definition: fixed_year_accuracy
+    num_bins: 5
+    boundaries_days: [365, 730, 1095, 1460]
+    censored_policy: exclude_ambiguous
+  bootstrap_samples: 1000
+  bootstrap_confidence: 0.95
+  bias_groups:
+    low: [0, 2]
+    medium: [3, 3]
+    high: [4, null]
+  sensitivity_grid:
+    generated_slides: [0, 1, 3, 4]
+    generated_patches: [100, 300, 500, 700, 900, 1000, 1100, 1200]

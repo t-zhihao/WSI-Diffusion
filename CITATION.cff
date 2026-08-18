@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "If you use WSI-Diffusion, please cite our AAAI 2025 paper."
+title: "WSI-Diffusion Official Implementation"
+type: software
+version: 1.0.0
+date-released: 2026-08-18
+repository-code: "https://github.com/t-zhihao/WSI-Diffusion"
+license: MIT
+authors:
+  - family-names: Tang
+    given-names: Zhihao
+  - family-names: Zhang
+    given-names: Xi
+  - family-names: Li
+    given-names: Chaozhuo
+preferred-citation:
+  type: article
+  title: "From Representation Space to Prognostic Insights: Whole Slide Image Generation with Hierarchical Diffusion Model for Survival Prediction"
+  authors:
+    - family-names: Tang
+      given-names: Zhihao
+    - family-names: Zhang
+      given-names: Xi
+    - family-names: Li
+      given-names: Chaozhuo
+  year: 2025
+  journal: "Proceedings of the AAAI Conference on Artificial Intelligence"
+  volume: 39
+  issue: 7
+  pages: "7329-7337"
+  doi: "10.1609/aaai.v39i7.32788"

@@ -1,0 +1,10 @@
+name: wsi-diffusion
+channels:
+  - pytorch
+  - conda-forge
+dependencies:
+  - python=3.8
+  - pip>=23
+  - openslide
+  - pip:
+      - -e .[all]
