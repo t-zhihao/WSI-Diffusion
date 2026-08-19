@@ -1,6 +1,6 @@
 # WSI-Diffusion
 
-Official PyTorch implementation of **“From Representation Space to Prognostic Insights: Whole Slide Image Generation with Hierarchical Diffusion Model for Survival Prediction”**, AAAI 2025.
+Official PyTorch implementation of **“From Representation Space to Prognostic Insights: Whole Slide Image Generation with Hierarchical Diffusion Model for Survival Prediction”**, AAAI 2025. Work in progress. This repository contains the current implementation of WSI-Diffusion. We are still checking the training pipeline, experiment settings, and documentation, so some parts may be updated before the final release.
 
 [Paper](https://doi.org/10.1609/aaai.v39i7.32788) · [AAAI page](https://ojs.aaai.org/index.php/AAAI/article/view/32788) · [中文说明](#中文说明)
 
